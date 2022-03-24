@@ -51,6 +51,12 @@ You can explain the following to students about what is already in their code:
    </style>
 ```
 
+**Format on Save Settings Fix*
+
+Students will need to adjust their format settings to make sure formatting doesn't get in the way of us using kaboom's syntax. 
+
+Click the hamburger menu at top left of screen > File > Preferences > Settings > In the "search settings" field search "format on save" > Uncheck the box
+
 ### Layers and Sprites - https://youtu.be/2nucjefSr6I?t=343 - Stephen
 
 Head over to your game.js file. Let’s initialize our kaboom

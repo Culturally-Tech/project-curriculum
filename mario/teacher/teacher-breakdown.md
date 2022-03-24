@@ -216,7 +216,7 @@ We’ve added all of  the characters that will eventually represent sprites to o
 
 ```javascript
 const map = [
-   [
+   
      "                                      ",
      "                                      ",
      "                                      ",
@@ -237,7 +237,7 @@ const levelCfg  = {
 width: 20,
 height: 20,
 '=': [sprite('block', solid())]
-'$': [sprite('coin'],
+'$': [sprite('coin')],
 '%': [sprite('surprise'), solid(), 'coin-surpise'],
 '*': [sprite('surprise'), solid(), 'mushroom-surpise'],
 '}': [sprite('unboxed'), solid()],

@@ -84,9 +84,9 @@ Then add the start function and pass it our game
 start("game")
 ```
 
-You should now see the game running. If using VS code, right click index.html - copy path - and paste path in browser to see game running.
+Save the work and you should see a checker like board meaning our new kaboom has been initilalized.
 
-Let’s make the background color black by adding the clearColor property in our kaboom initialization
+Let’s make the background color black by adding the `clearColor` property in our kaboom initialization
 
 ```javascript
 kaboom({

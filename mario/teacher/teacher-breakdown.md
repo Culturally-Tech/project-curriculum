@@ -57,6 +57,10 @@ Students will need to adjust their format settings to make sure formatting doesn
 
 Click the hamburger menu at top left of screen > File > Preferences > Settings > In the "search settings" field search "format on save" > Uncheck the box
 
+** Opening preview in new tab
+
+Click on the boxes in the top right hand corner of the preview screen to open your preview in full screen. You will be toggling back and forth between your code and full screen view a lot.
+
 ### Layers and Sprites - https://youtu.be/2nucjefSr6I?t=343 - Stephen
 
 Head over to your game.js file. Let’s initialize our kaboom
@@ -65,7 +69,7 @@ Head over to your game.js file. Let’s initialize our kaboom
 kaboom({
  global: true,
  fullscreen: true,
- scale: 2,
+ scale: 1,
  debug: true,
 });
 ```
@@ -202,9 +206,9 @@ const gameLevel = addLevel(map, levelCfg)
 })
 ```
 
-Now le'ts refresh our page and we shoud see our game board with the blocks!
+Now let's refresh our page and we shoud see our game board with the blocks!
 
-Let's make our board a bit bit larger in the kaboom function change the scale to 2
+Let's make our board a bit larger in the kaboom function change the scale to 2
 
 ```javascript
  scale: 2
@@ -238,10 +242,10 @@ Let’s assign values now in our levelCfg
 const levelCfg  = {
 width: 20,
 height: 20,
-'=': [sprite('block', solid())]
+'=': [sprite('block'), solid()],
 '$': [sprite('coin')],
-'%': [sprite('surprise'), solid(), 'coin-surpise'],
-'*': [sprite('surprise'), solid(), 'mushroom-surpise'],
+'%': [sprite('surprise'), solid(), 'coin-surprise'],
+'*': [sprite('surprise'), solid(), 'mushroom-surprise'],
 '}': [sprite('unboxed'), solid()],
 '(': [sprite('pipe-bottom-left'), solid()],
 ')': [sprite('pipe-bottom-right'), solid()],
@@ -272,7 +276,7 @@ Refresh and you will see our evil mushrooms, but you won’t see the additional 
 
 ### Adding Mario - https://youtu.be/2nucjefSr6I?t=1290 - Namita
 
-Let’s use the kaboom method of add and save it to a variable named player so that we can use it later.
+Let’s use the kaboom method of add and save it to a variable named player so that we can use it later. This player will essentially be our mario character.
 
 ```javascript
 const player = add([
@@ -294,23 +298,23 @@ Let’s add our score! Use the add function!
 // save it to a variable so we can use it later 
 const scoreLabel = add([
 // adding text and giving it the score as the text
- text(‘test’),
+ text(score),
 // position on the grid
  pos(30, 6),
 // let's add it to our UI layer. Remember we set it up to have everything use our object layer as default so this is our first time using the UI layer. So it won't interfere with anything happening in our game
 layer('ui'),
 // add a value of score
 {
- value: ‘test’,
+ value: score,
 }
 ])
 
-// add some text so we can see the level we are on. This will be useful for later when we have multiple layers. 
+// add some text so we can see the level we are on. This will be useful for later when we have multiple levels. 
 
-add([text('level' + 'test', pos(4,6))])
+add([text('level' + score, pos(4,6))])
 ```
 
-Refresh and you will get an error that the score isn’t defined. Simply replace the score variable with the string ‘test’ in the two places it appears. This is just so we can temporarily mock the score variable behavior until we get it up and running.
+Refresh and you will get an error that the score isn’t defined. Simply replace the score variable with the string ‘test’ in the three places it appears. This is just so we can temporarily mock the score variable behavior until we get it up and running.
 
 The changes should look like this 
 
@@ -318,8 +322,11 @@ The changes should look like this
 text(score) => text('test')
 
 value:score => value:'test'
+
+add([text('level' + score, pos(4,6))]) => add([text('level' + 'test', pos(4,6))])
+
 ```
-Now if you refresh you’ll see our text appear!
+Now if you refresh you’ll see our text that reads 'test' appear! Later on this is where our level and score will be.
 
 
 ### Keyboard Events - https://youtu.be/2nucjefSr6I?t=1508 - Stephen
@@ -327,18 +334,20 @@ Now if you refresh you’ll see our text appear!
 Let’s make our player move. Add the following
 
 ```javascript
-// move the MOVE_SPEED and JUMP_FORCE variables to the top of the file
+// move the MOVE_SPEED and JUMP_FORCE variables to the top of the file. Make sure they are placed outside of the `scene()` function
 
 const MOVE_SPEED = 120
 const JUMP_FORCE = 360
 
+// this code should be place within the `scene()` function
+
 keyDown('left', () => {
    player.move(-MOVE_SPEED, 0)
-}
+})
 
 keyDown('right', () => {
    player.move(MOVE_SPEED, 0)
-}
+})
 
 // let's make our player jump too
 
@@ -353,7 +362,7 @@ Refresh and test and now Mario should be able to move right and left and jump! H
 
 ### Make Mario Big - https://youtu.be/2nucjefSr6I?t=1670 - Stephen
 
-Right underneath our add([text(‘level’ + ‘test’, pos(4, 6))]) function let’s add a function to make Mario bigger so he can jump a bit higher on the larger blocks
+Right underneath our `add([text(‘level’ + ‘test’, pos(4, 6))])` function let’s add a function to make Mario bigger so he can jump a bit higher on the larger blocks
 
 ```javascript
 function big() {
@@ -386,7 +395,7 @@ function big() {
 }
 ```
 
-Now we just add our `big()` function onto our Mario player
+Now we just add our `big()` function onto our Mario player. 
 
 ```javascript
 const player = add([
@@ -397,6 +406,8 @@ const player = add([
   origin('bot')
 ])
 ```
+
+You will notice that even after adding the `big()` function mario still jumps the same, but we will change that later. 
 
 ### Coin and Mushroom -  https://youtu.be/2nucjefSr6I?t=1851  - Namita
 
@@ -429,15 +440,25 @@ player.on("headbump", (obj) => {
 
 Now let’s do the same thing for our mushroom surprise. *This would be a good opportunity to give students a minute to do this themselves since it’s basically a repeat of the same thing they just did.*
 
+Add the `mushroom-surprise` conditional to your existing `player.on("headbump"...)` function
+
 ```javascript
 player.on("headbump", (obj) => {
- if (obj.is('mushroom-surprise')) {
-  gameLevel.spawn('$', obj.gridPos.sub(0, 1))
-  destroy(obj)
-  gameLevel.spawn('}', obj.gridPos.sub(0, 0))
-  }
-})
+ if (obj.is('coin-surprise')) {
+     gameLevel.spawn('$', obj.gridPos.sub(0, 1))
+     destroy(obj)
+     gameLevel.spawn('}', obj.gridPos.sub(0, 0))
+  } 
+  if (obj.is('mushroom-surprise')) {
+      gameLevel.spawn('#', obj.gridPos.sub(0, 1))
+      destroy(obj)
+     gameLevel.spawn('}', obj.gridPos.sub(0, 0))
+    }
+  })
+
 ```
+
+Now refresh your page. When you hit the first question mark brick you'll see a coin. When you hit the second you should see a mushroom.
 
 Now let’s make our mushroom move. Let’s first add a mushroom tag to our mushroom sprite.
 

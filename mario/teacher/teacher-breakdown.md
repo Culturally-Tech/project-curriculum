@@ -114,7 +114,7 @@ We are going to add our maps for our gameboard, but first we need to load our sp
 
 Go to the imgur page here https://imgur.com/a/F8Jkryq
 
-For this section demonstrate how you are using imgur to host your image files and only referencing the links from the url in the code. Students DO NOT need to do this with you. Just have them copy 'Sprite Paths Level 1' code from their repo
+For this section demonstrate how you are using imgur to host your image files and only referencing the links from the url in the code. Students DO NOT need to do this with you. Just have them copy 'Sprite Paths Level 1' code from their repo. This code should be posted outside of the `scene()` function right after our `kaboom()` initilization at the top of the page.
 
 It should look like this when they're finished copying
 

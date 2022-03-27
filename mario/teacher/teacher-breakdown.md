@@ -68,6 +68,7 @@ kaboom({
  scale: 2,
  debug: true,
 });
+```
 
 Let's add our game scene
 

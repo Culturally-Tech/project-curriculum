@@ -470,7 +470,6 @@ Now we will use action to make our mushroom move.
 
 ```javascript
 action('mushroom', (m) => {
-// we're moving our mushroom along the y axis 10
   m.move(10, 0)
 })
 ```

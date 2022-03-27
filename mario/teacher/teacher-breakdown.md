@@ -123,19 +123,19 @@ For this section demonstrate how you are using imgur to host your image files an
 It should look like this when they're finished copying
 
 ```javascript
-loadRoot('https://i.imgur.com/')
-loadSprite('coin', 'wbKxhcd.png')
-loadSprite('evil-shroom', 'KPO3fR9.png')
-loadSprite('brick', 'pogC9x5.png')
-loadSprite('block', 'M6rwarW.png')
-loadSprite('mario', 'Wb1qfhK.png')
-loadSprite('mushroom', '0wMd92p.png')
-loadSprite('surprise', 'gesQ1KP.png')
-loadSprite('unboxed', 'bdrLpi6.png')
-loadSprite('pipe-top-left', 'ReTPiWY.png')
-loadSprite('pipe-top-right', 'hj2GK4n.png')
-loadSprite('pipe-bottom-left', 'c1cYSbt.png')
-loadSprite('pipe-bottom-right', 'nqQ79eI.png')
+loadRoot('https://i.imgur.com/');
+loadSprite('coin', 'wbKxhcd.png');
+loadSprite('evil-shroom', 'KPO3fR9.png');
+loadSprite('brick', 'pogC9x5.png');
+loadSprite('block', 'M6rwarW.png');
+loadSprite('mario', 'Wb1qfhK.png');
+loadSprite('mushroom', '0wMd92p.png');
+loadSprite('surprise', 'gesQ1KP.png');
+loadSprite('unboxed', 'bdrLpi6.png');
+loadSprite('pipe-top-left', 'ReTPiWY.png');
+loadSprite('pipe-top-right', 'hj2GK4n.png');
+loadSprite('pipe-bottom-left', 'c1cYSbt.png');
+loadSprite('pipe-bottom-right', 'nqQ79eI.png');
 ```
 
 Let’s create our map within our scene function. **(Explain briefly how the map works but students can copy Map Level 1 Part A from their GitHub repo)**
@@ -366,7 +366,7 @@ Right underneath our `add([text(‘level’ + ‘test’, pos(4, 6))])` function
 
 ```javascript
 function big() {
- let time = 0
+ let timer = 0
  let isBig = false
   return { 
    update() {
@@ -388,7 +388,7 @@ function big() {
 },
     biggify() {
     this.scale = vec2(2)
-    timer = timer
+    timer = time
     isBig = true
   }
  }
@@ -482,6 +482,8 @@ Yup, you got it! Let’s add gravity by adding the `body` component to our mushr
 '#': [sprite('mushroom'), solid(), 'mushroom', body()],
 ```
 
+Now if you refresh your page you'll see when the mushroom falls off the brick it falls down.
+
 Now let’s make Mario grow if he eats the mushroom. We can add this code right above our keyDown events.
 
 ```javascript
@@ -505,13 +507,11 @@ Let’s add a coin tag to our coin sprite.
 '$': [sprite('coin'), 'coin'],
 ```
 
-Let’s refresh the page. Now you should see the score appear as NaN when Mario collides with a coin. This is something we have to fix. May be a good point to pause and ask students to look at their code and figure out why it’s currently showing up as NaN. We will fix this soon.
+Let’s refresh the page. Hit the first question mark box and jump with Mario to collide with the coin. Now you should see the score appear as NaN when Mario collides with a coin. This is something we have to fix. May be a good point to pause and ask students to look at their code and figure out why it’s currently showing up as NaN. We will fix this soon.
 
 You will also notice that Mario gets bigger when he eats a mushroom! We’re almost there but we also want him to jump higher when he eats the mushroom so he can get on the higher level.
 
-
-
-We need to add a couple of new variables at the top of our file
+ We need to add a couple of new variables at the top of our file
 
 ```javascript
 let CURRENT_JUMP_FORCE = JUMP_FORCE
@@ -523,7 +523,7 @@ So when he gets bigger we need to make the `CURRENT_JUMP_FORCE = BIG_JUMP_FORCE`
 ```javascript
 smallify() {
     this.scale = vec2(1)
-// add the code below to our smallify function
+// add the line of code below to our smallify function
 CURRENT_JUMP_FORCE = JUMP_FORCE  
     timer = 0
     isBig = false
@@ -546,7 +546,7 @@ action('mushroom', (m) => {
 
 Refresh our page. It’s still not jumping higher. Can anybody figure out why it’s still not changing? *Check your code.*
 
-Right! We need `player.jump` to jump at the `CURRENT_JUMP_FORCE`. 
+Right! We need `player.jump` to jump at the `CURRENT_JUMP_FORCE`. Let's change the variable we're passing to the `player.jump` function to `CURRENT_JUMP_FORCE`
 
 ```javascript
 keyPress('space', () => {
@@ -559,12 +559,12 @@ Refresh your page, collide with a mushroom, and now you’ll see Mario has bunni
 
 ### Let's Make the Little Guys Move -  https://youtu.be/2nucjefSr6I?t=2402 - Stephen
 
-Let’s make the little guys move now! Right underneath our last player.collides function let’s add
+Let’s make the little guys move now! Right underneath our last `player.collides` function let’s add
 
 ```javascript
 player.collides('dangerous', (d) => {
 // we are going to trigger a lose scene when ever player collides with a sprite with the dangerous tag
- go('lose', score: scoreLabel.value})
+ go('lose', score: { scoreLabel.value })
 })
 ```
 
@@ -644,6 +644,7 @@ keyPress('space', () => {
  isJumping = true
  player.jump(CURRENT_JUMP_FORCE)
  }
+ })
 ```
 
 Above the above `keyPress` keyboard event add the following 
@@ -664,7 +665,7 @@ player.collides('dangerous', (d) => {
  if (isJumping) {
   destroy(d)
 } else {
- go('lose', score: scoreLabel.value})
+ go('lose', { score: scoreLabel.value})
  }
 })
 ```
@@ -722,7 +723,7 @@ Lastly, let’s make sure our level displays. Add the level to your add text fun
 //since our level is set to 0 we want to make sure it says 1 instead to the user so we add 1
 //we also use the parseInt function to make sure it displays a number
 //we adjust the position slightly so it doesn't overlap our score
-add([text('level' + parseInt(level + 1)), pos(40,6))])
+  add([text('level ' + parseInt(level + 1) ), pos(40, 6)])
 ```
 
 Refresh now you’ll see our level displayed. 
@@ -738,9 +739,9 @@ Refresh and jump on the pipe and press down. You should see the level text at th
 
 ### New Level Map - https://youtu.be/2nucjefSr6I?t=3085 - Namita
 
-Let’s change our one map into an array of `maps`. Copy your previously created map into the first array and we will create the second map.
+Let’s change our one map into an array of `maps`. Add sqaure brackets around the outside of your first map, then add an empty array. Change `map` to `maps`.
 
-Your `maps` array should now look like this.
+There `maps` array should now look like this.
 
 ```javascript
 const maps = [
@@ -766,7 +767,9 @@ Now let’s adjust our addLevel function
 const gameLevel = addLevel(maps[level], levelCfg)
 ```
 
-Let’s copy our first map and use it as a start for our second map
+Let’s copy our first map and use it as a start for our second map. Place your cursor between empty array and press enter. Copy your first map into this array.
+
+There maps should now look like this. Essentially, the same maps repeated.
 
 ```javascript
 const maps = [
@@ -797,7 +800,7 @@ const maps = [
 ]
 ```
 
-At the moment they look the same, but let’s load in some more sprites. Let’s load in some blue sprites for the next level. Underneath your last loaded sprite, let’s add a few more. **Have students copy the code from their GitHub repos under Sprite Path 2.**
+Refresh your page and go to the next level by pressing down on the pipes. At the moment the levels look the same, but let's change that. First, let’s load in some blue sprites for the next level. Underneath your last loaded sprite, let’s add a few more. **Have students copy the code from their GitHub repos under Sprite Path 2.**
 
 It will look like this and should be placed with the other loaded sprites towards the top of the file.
 
@@ -850,9 +853,9 @@ const maps = [
 
 Refresh and you should now be able to go on to level 2 once you press down when on the pipe!
 
-We did it!
+We did it! 
 
-You’ll notice an error when finishing level 2 because we don’t have a level 3. Let’s loop the levels so we don’t run into this error. Find the `player.collides` function for our pipe tag and utilize the modulus operator.
+Complete level 2 just like you did the first level by reaching the pipe and pressing the down arrow. You’ll notice an error when finishing level 2 because we don’t have a level 3. Let’s loop the levels so we don’t run into this error. Find the `player.collides` function for our pipe tag and utilize the modulus operator.
 
 ```javascript
 player.collides('pipe', () => {

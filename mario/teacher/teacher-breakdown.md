@@ -98,6 +98,7 @@ kaboom({
 clearColor: [0, 0, 0, 1]
 });
 ```
+Save your work and you should now see a black background.
 
 Let's add our layers
 

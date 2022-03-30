@@ -574,7 +574,8 @@ Add the following for our scene
 
 ```javascript
 scene('lose', ({ score }) => {
- add([text(score, 32), origin('center'), pos(width()/2, height()/2)])
+ add([text(score, 32), origin('center'), pos(width()/2, height()/ 2)])
+
 })
 ```
 

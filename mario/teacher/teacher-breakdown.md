@@ -564,7 +564,7 @@ Let’s make the little guys move now! Right underneath our last `player.collide
 ```javascript
 player.collides('dangerous', (d) => {
 // we are going to trigger a lose scene when ever player collides with a sprite with the dangerous tag
- go('lose', score: { scoreLabel.value })
+ go('lose', { score:  scoreLabel.value })
 })
 ```
 
